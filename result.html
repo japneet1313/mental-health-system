@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Result</title>
+
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #fce4ec, #e0f7fa);
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.result-card {
+    background: #ffffffcc;
+    padding: 40px 30px;
+    border-radius: 15px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.result-card h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #5c527f;
+}
+.result-card h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+.result-card p {
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+#dashboardBtn {
+    background-color: #a8dadc;
+}
+#adminBtn {
+    background-color: #ffd6a5;
+}
+#notificationPopup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #ffb3c1;
+    color: #333;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    display: none;
+    animation: slideIn 0.5s ease;
+}
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="notificationPopup">
+    📩 Notification sent to your guardian
+</div>
+
+<div class="result-card">
+
+    <h1>Your Result</h1>
+
+    <h2 id="resultText">Risk Level: UNKNOWN</h2>
+    <p id="advice">No data available.</p>
+
+    <div>
+        <button id="dashboardBtn" onclick="goToDashboard()">Go to Dashboard</button>
+        <button id="adminBtn" onclick="goToAdmin()">See Admin Panel</button>
+    </div>
+
+</div>
+
+<script>
+let score = parseInt(localStorage.getItem("stressScore")) || 0;
+let risk = localStorage.getItem("riskLevel") || "UNKNOWN";
+
+let resultText = document.getElementById("resultText");
+let advice = document.getElementById("advice");
+
+resultText.innerText = "Risk Level: " + risk;
+
+if(risk === "HIGH"){
+    advice.innerText = "⚠️ You may be under high stress. Please talk to someone you trust immediately.";
+
+    const popup = document.getElementById("notificationPopup");
+    popup.style.display = "block";
+
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 4000);
+}
+else if(risk === "MODERATE"){
+    advice.innerText = "😐 You have moderate stress. Try relaxation and take breaks.";
+}
+else if(risk === "LOW"){
+    advice.innerText = "😊 You are doing well. Keep maintaining balance!";
+}
+else{
+    advice.innerText = "No data available.";
+}
+
+function goToDashboard() {
+    window.location.href = '/dashboard';
+}
+
+function goToAdmin() {
+    window.location.href = '/admin';
+}
+</script>
+
+</body>
+</html>
